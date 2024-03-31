@@ -6,8 +6,10 @@ import (
 	"log"
 	"net/http"
 
-	"github.com/gorilla/mux"
 	"gotest/models"
+
+	"github.com/google/uuid"
+	"github.com/gorilla/mux"
 )
 
 type response struct {
@@ -46,12 +48,22 @@ func GetCar(w http.ResponseWriter, r *http.Request) {
 	params := mux.Vars(r)
 	guid := params["guid"]
 
+	// Validasi GUID
+	if _, err := uuid.Parse(guid); err != nil {
+		http.Error(w, "GUID tidak valid", http.StatusBadRequest)
+		return
+	}
+
 	car, err := models.GetCar(guid)
 	if err != nil {
-		log.Fatalf("Gagal mendapatkan data mobil. %v", err)
+		log.Printf("Gagal mendapatkan data mobil dengan GUID %s: %v", guid, err)
+		http.Error(w, "Gagal mendapatkan data mobil", http.StatusInternalServerError)
+		return
 	}
 	json.NewEncoder(w).Encode(car)
 }
+
+
 
 func GetAllCars(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
