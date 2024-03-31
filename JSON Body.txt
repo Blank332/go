@@ -1,0 +1,18 @@
+JSON Body for AddCar :
+{
+	"car_name":"Murcielago",
+    "car_brand":"Lamborghini",
+    "car_type":"Exotic",
+	"car_year":2005,
+	"car_description":"Super Car"
+}
+
+JSON Body for Update Car By Guid :
+{
+    "guid" : "{guid} "
+	"car_name":"",
+    "car_brand":"",
+    "car_type":"",
+	"car_year":,
+	"car_description":" "
+}
